@@ -14,22 +14,28 @@ function App() {
     const handleAddTask = (event) => {
         if (event.key === "Enter") {
             setTasks(prevState => [...prevState, {
-            id: getId(),
-            name: value,
-            status: 'active'
+                id: getId(),
+                name: value,
+                status: 'active'
             }]);
             setValue('');
         }
     }
 
-    // const handleDelete = (event) => {
-    //
-    // }
+    const handleDelete = (toDelete) => {
+        return () => {
+            const newTasks = tasks.filter((task) => task !== toDelete);
+            setTasks(newTasks);
+        }
+    }
 
     const taskList = tasks.map((element) => (
-        <li key={ element.id }>
-            { element.name }
-            <button>X</button>
+        <li key={element.id}>
+            {element.name}
+            <button
+                onClick={handleDelete(element)}>
+                X
+            </button>
         </li>
     ));
 
@@ -42,7 +48,7 @@ function App() {
                    onKeyUp={handleAddTask}
             />
             <ul>
-                { taskList }
+                {taskList}
             </ul>
         </>
     )
