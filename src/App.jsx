@@ -29,9 +29,21 @@ function App() {
         }
     }
 
+    const handleChangeStatus = (task) => {
+        return () => {
+            task.status = task.status === 'active' ? 'done' : 'active';
+            setTasks([...tasks]);
+        }
+    }
+
     const taskList = tasks.map((element) => (
         <li key={element.id}>
-            {element.name}
+            <button
+                onClick={handleChangeStatus(element)}
+                className={element.status === 'active' ? 'active' : 'done'}>
+                { element.status }
+            </button>
+            <span>{element.name}</span>
             <button
                 onClick={handleDelete(element)}>
                 X
