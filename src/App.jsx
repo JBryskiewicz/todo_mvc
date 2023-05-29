@@ -42,7 +42,7 @@ function App() {
         }
     }
 
-    function handleDeleteDoneTasks(){
+    function handleDeleteDoneTasks() {
         setTasks(tasks.filter((task) => task.status !== 'done'));
     }
 
@@ -55,34 +55,38 @@ function App() {
                 onChange={handleInput}
                 onKeyUp={handleAddTask}
             />
-            <ul>
-                {tasks
-                    .filter((task) => filter === 'all' ? true : task.status === filter)
-                    .map((task) => (
-                    <li key={task.id}>
+            {!!tasks.length && (
+                <>
+                    <ul>
+                        {tasks
+                            .filter((task) => filter === 'all' ? true : task.status === filter)
+                            .map((task) => (
+                                <li key={task.id}>
+                                    <button
+                                        onClick={handleChangeStatus(task)}
+                                        className={task.status === 'active' ? 'active' : 'done'}
+                                    >{task.status}</button>
+                                    <span>{task.name}</span>
+                                    <button
+                                        onClick={handleDelete(task)}
+                                    >delete
+                                    </button>
+                                </li>
+                            ))}
+                    </ul>
+                    <span>{tasks.filter((task) => task.status === 'active').length} items left</span>
+                    <div>
+                        <button onClick={() => setFilter('all')}>All</button>
+                        <button onClick={() => setFilter('active')}>Active</button>
+                        <button onClick={() => setFilter('done')}>Complited</button>
+                    </div>
+                    {tasks.some((task) => task.status === 'done') && (
                         <button
-                            onClick={handleChangeStatus(task)}
-                            className={task.status === 'active' ? 'active' : 'done'}
-                        >{task.status}</button>
-                        <span>{task.name}</span>
-                        <button
-                            onClick={handleDelete(task)}
-                        >delete
-                        </button>
-                    </li>
-                ))}
-            </ul>
-            <div>
-                <button onClick={() => setFilter('all')}>All</button>
-                <button onClick={() => setFilter('active')}>Active</button>
-                <button onClick={() => setFilter('done')}>Complited</button>
-            </div>
-            {tasks.some((task) => task.status === 'done') && (
-                <button
-                    onClick={handleDeleteDoneTasks}
-                >Clear completed</button>
+                            onClick={handleDeleteDoneTasks}
+                        >Clear completed</button>
+                    )}
+                </>
             )}
-
         </>
     )
 }
